@@ -10,6 +10,27 @@
 
 @implementation Model
 
+//此时传入第二个数字num
+-(double)calculate:(double)num andOperator:(NSString *)ope
+{
+    if ([ope isEqualToString:@"+"])
+    {
+        self.result += num;
+    }
+    if ([ope isEqualToString:@"-"])
+    {
+        self.result -= num;
+    } if ([ope isEqualToString:@"*"])
+    {
+        self.result *= num;
+    } if ([ope isEqualToString:@"/"])
+    {
+        self.result /= num;
+    }
+    
+    return self.result;
+}
+
 
 
 @end

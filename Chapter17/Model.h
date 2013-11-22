@@ -10,6 +10,8 @@
 
 @interface Model : NSObject
 
-@property (nonatomic)double result;
+@property (nonatomic)double result;//第一个数字
+
+- (double)calculate:(double)num andOperator:(NSString *)ope;
 
 @end
