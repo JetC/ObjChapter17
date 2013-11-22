@@ -39,10 +39,7 @@
     {
         self.model.result = self.num;
     }
-    else
-    {
-        
-    }
+  
 }
 
 -(IBAction)operatorPress:(id)sender
@@ -54,7 +51,7 @@
 -(IBAction)resultPress:(id)sender
 {
     self.model.result = [self.model calculate:self.num andOperator:self.currentOperator];
-    self.resultLabel.text = [NSString stringWithFormat:@"%f",self.model.result];
+    self.resultLabel.text = [NSString stringWithFormat:@"%.3f",self.model.result];
 }
 
 -(IBAction)cleanPress:(id)sender
