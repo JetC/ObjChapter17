@@ -9,12 +9,6 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-#define NSLog(...) LogMessageF( \
-__FILE__,           \
-__LINE__,           \
-__FUNCTION__,       \
-nil, 0,             \
-__VA_ARGS__)
 
 #pragma 还要学习OutletCollection
 @property (strong, nonatomic) IBOutletCollection(UIButton)NSArray *digitalNum;
@@ -26,7 +20,7 @@ __VA_ARGS__)
 @property (nonatomic)NSInteger addingNum2;//加数2
 @property (strong, nonatomic)NSString *operator;//运算符
 @property (strong, nonatomic)NSString *stringInputed;
-@property (nonatomic) BOOL hasCalculationFinished;
+
 
 @end
 
@@ -40,7 +34,6 @@ __VA_ARGS__)
     self.stringInputedFirst = [[NSMutableString alloc]init];
     self.stringInputedSecond = [[NSMutableString alloc]init];
     self.stringInputed = [[NSString alloc]init];
-    self.hasCalculationFinished = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,15 +44,6 @@ __VA_ARGS__)
 
 -(IBAction)digitPress:(id)sender
 {
-    if (self.hasCalculationFinished == YES)
-    {
-        self.textInputed.text = @"";
-    }
-    else
-    {
-        self.hasCalculationFinished = NO;
-    }
-    
     UIButton *btn = (UIButton *)sender;
     self.singleTempNum = [btn.titleLabel.text integerValue];
     self.textInputed.text = [NSString stringWithFormat:@"%@%i",self.textInputed.text,self.singleTempNum];
@@ -101,16 +85,6 @@ __VA_ARGS__)
 
 -(IBAction)operatorPress:(id)sender
 {
-    if (self.hasCalculationFinished == YES)
-    {
-        self.textInputed.text = @"";
-        self.hasCalculationFinished = NO;
-    }
-    else//如果刚刚完成过一次运算则清空显示数据
-    {
-        self.hasCalculationFinished = NO;
-    }
-    NSLog(@"Now the _hasCalculationFinished is:%hhd",self.hasCalculationFinished);
     static NSInteger i=1;//第i次按运算符
     UIButton *btn = (UIButton *)sender;
     self.operator = btn.titleLabel.text;
@@ -145,7 +119,7 @@ __VA_ARGS__)
 
     
     }
-    self.hasCalculationFinished = YES;
+    
     i=i+1;
     NSLog(@"%i,%@,%i",self.num,self.operator,self.addingNum2);
     return;
