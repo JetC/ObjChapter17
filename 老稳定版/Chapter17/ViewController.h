@@ -11,12 +11,11 @@
 
 @interface ViewController : UIViewController
 
-@property (nonatomic,strong)Model *model;
+//@property (nonatomic,strong)Model *model;
 @property (nonatomic,strong)IBOutlet UILabel *resultLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *numberButtons;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *operatorButtons;
-@property (nonatomic,strong)NSString *currentOperator;
-@property (nonatomic)NSInteger num;//存放结果
+//@property (nonatomic,strong)NSString *currentOperator;
 
 
 - (IBAction)digitPress:(id)sender;

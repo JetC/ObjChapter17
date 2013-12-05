@@ -17,13 +17,11 @@ nil, 0,             \
 __VA_ARGS__)
 
 #pragma 还要学习OutletCollection
-@property (strong, nonatomic) IBOutletCollection(UIButton)NSArray *digitalNum;
-@property (weak, nonatomic) IBOutlet UILabel *textInputed;
+@property (strong, nonatomic) IBOutletCollection(UIButton)NSArray *digitalNum;//无用
+@property (weak, nonatomic) IBOutlet UILabel *textInputed;//已输出
 @property (nonatomic)NSInteger singleTempNum;//放单个数字
 @property (strong, nonatomic)NSMutableString *stringInputedFirst;//加数1的字符串
-@property (strong, nonatomic)NSMutableString *stringInputedSecond;//加数2的字符串
 @property (nonatomic)NSInteger addingNum1;//加数1
-@property (nonatomic)NSInteger addingNum2;//加数2
 @property (strong, nonatomic)NSString *operator;//运算符
 @property (strong, nonatomic)NSString *stringInputed;
 @property (nonatomic) BOOL hasCalculationFinished;
@@ -35,10 +33,10 @@ __VA_ARGS__)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.model = [[Model alloc]init];
+    //self.model = [[Model alloc]init];
     //self.tempForSingleNum = [[NSString alloc]init];
     self.stringInputedFirst = [[NSMutableString alloc]init];
-    self.stringInputedSecond = [[NSMutableString alloc]init];
+    //self.stringInputedSecond = [[NSMutableString alloc]init];
     self.stringInputed = [[NSString alloc]init];
     self.hasCalculationFinished = NO;
 }
