@@ -10,12 +10,6 @@
 
 #import "AppDelegate.h"
 
-#define NSLog(...) LogMessageF( \
-__FILE__,           \
-__LINE__,           \
-__FUNCTION__,       \
-nil, 0,             \
-__VA_ARGS__)
 int main(int argc, char * argv[])
 {
     @autoreleasepool {

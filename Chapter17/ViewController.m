@@ -9,22 +9,19 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-#define NSLog(...) LogMessageF( \
-__FILE__,           \
-__LINE__,           \
-__FUNCTION__,       \
-nil, 0,             \
-__VA_ARGS__)
 
 #pragma 还要学习OutletCollection
-@property (strong, nonatomic) IBOutletCollection(UIButton)NSArray *digitalNum;//无用
-@property (weak, nonatomic) IBOutlet UILabel *textInputed;//已输出
+@property (strong, nonatomic) IBOutletCollection(UIButton)NSArray *digitalNum;//无用但现在还不能删...
+@property (weak, nonatomic) IBOutlet UILabel *textInputed;
 @property (nonatomic)NSInteger singleTempNum;//放单个数字
-@property (strong, nonatomic)NSMutableString *stringInputedFirst;//加数1的字符串
+@property (strong, nonatomic)NSMutableString *stringInputed;//字符串
 @property (nonatomic)NSInteger addingNum1;//加数1
+@property (nonatomic)NSInteger addingNum2;//加数2
 @property (strong, nonatomic)NSString *operator;//运算符
-@property (strong, nonatomic)NSString *stringInputed;
-@property (nonatomic) BOOL hasCalculationFinished;
+@property (nonatomic)NSInteger num;//存放结果
+@property (nonatomic)NSInteger timesOperatorPressed;//计算次数
+@property (nonatomic)BOOL hasCalculationFinished;
+
 
 @end
 
@@ -33,11 +30,8 @@ __VA_ARGS__)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.model = [[Model alloc]init];
-    //self.tempForSingleNum = [[NSString alloc]init];
-    self.stringInputedFirst = [[NSMutableString alloc]init];
-    //self.stringInputedSecond = [[NSMutableString alloc]init];
-    self.stringInputed = [[NSString alloc]init];
+    self.stringInputed = [[NSMutableString alloc]init];
+    self.timesOperatorPressed = 1;
     self.hasCalculationFinished = NO;
 }
 
@@ -51,126 +45,128 @@ __VA_ARGS__)
 {
     if (self.hasCalculationFinished == YES)
     {
-        self.textInputed.text = @"";
-    }
-    else
-    {
-        self.hasCalculationFinished = NO;
+        [self cleanToBeReadyForNextCalculation];
     }
     
     UIButton *btn = (UIButton *)sender;
     self.singleTempNum = [btn.titleLabel.text integerValue];
     self.textInputed.text = [NSString stringWithFormat:@"%@%i",self.textInputed.text,self.singleTempNum];
-
-    if (self.stringInputedFirst == nil)
+    
+    if (self.stringInputed == NULL)
     {
-        self.stringInputedFirst = (NSMutableString *)[NSString stringWithFormat:@"%i",self.singleTempNum];
-
+        self.stringInputed = (NSMutableString *)[NSString stringWithFormat:@"%i",self.singleTempNum];
+        
     }
-    else if (self.stringInputedFirst)
+    else if (self.stringInputed)
     {
-        self.stringInputedFirst = (NSMutableString *)[NSString stringWithFormat:@"%@%i",self.stringInputedFirst,self.singleTempNum];
+        self.stringInputed = (NSMutableString *)[NSString stringWithFormat:@"%@%i",self.stringInputed,self.singleTempNum];
     }
+    self.addingNum1 = [self.stringInputed intValue];
+    
+   
     
     
-//    针对OutletCollection快速枚举事例
-//    for (UIButton *digitalButton in self.digitalNum) {
-//        <#statements#>
-//    }
-    
-    
-    
-//    UIButton *btn = (UIButton *)sender;
-//    self.num = [btn.titleLabel.text doubleValue] ;
-//    if (self.currentOperator == nil)//是第一个数字的话
-//    {
-//        self.model.result = self.num;
-//        self.stringInputedFirst = (NSMutableString *)[NSString stringWithFormat:@"%1.0f",self.num];
-//        self.textInputed.text = self.stringInputedFirst;
-//    }
-//    else
-//    {
-//        self.stringInputedFirst = (NSMutableString *)[NSString stringWithFormat:@"%@,%1.0f",self.stringInputedFirst,self.num];
-//        self.textInputed.text = self.stringInputedFirst;
-//    }
-    
-  
 }
 
 -(IBAction)operatorPress:(id)sender
 {
     if (self.hasCalculationFinished == YES)
     {
-        self.textInputed.text = @"";
-        self.hasCalculationFinished = NO;
+        return;
     }
-    else//如果刚刚完成过一次运算则清空显示数据
-    {
-        self.hasCalculationFinished = NO;
-    }
-    NSLog(@"Now the _hasCalculationFinished is:%hhd",self.hasCalculationFinished);
-    static NSInteger i=1;//第i次按运算符
     UIButton *btn = (UIButton *)sender;
     self.operator = btn.titleLabel.text;
+  
     self.textInputed.text = [NSString stringWithFormat:@"%@%@",self.textInputed.text,self.operator];
-    if (i == 1)
+
+    
+    if (self.timesOperatorPressed == 1)
     {
-        self.addingNum1 = [self.stringInputedFirst intValue];
+        self.addingNum1 = [self.stringInputed intValue];
         self.num = self.addingNum1 + self.addingNum2;
         UIButton *btn = (UIButton *)sender;
         self.operator = btn.titleLabel.text;
-        self.stringInputedFirst = nil;
+        self.stringInputed = nil;
     }
-    else if(i == 2)
+    else if(self.timesOperatorPressed == 2)
     {
-        self.addingNum2 = [self.stringInputedFirst intValue];
-        self.num = self.addingNum1+self.addingNum2;
-        self.stringInputedFirst = nil;
-        self.addingNum1 = nil;
-        self.addingNum2 = nil;
+        self.addingNum2 = [self.stringInputed intValue];
+        self.num = self.num+self.addingNum2;
+        self.stringInputed = nil;
+        self.addingNum1 = 0;
+        self.addingNum2 = 0;
         UIButton *btn = (UIButton *)sender;
         self.operator = btn.titleLabel.text;
         
     }
     else
     {
-        self.addingNum1 = [self.stringInputedFirst intValue];
-        self.num =  self.num+self.addingNum1;
-        self.addingNum1 = nil;
-        self.stringInputedFirst = nil;
-
-
-
-    
+        self.addingNum1 = [self.stringInputed intValue];
+        self.num =  self.num + self.addingNum1;
+        self.addingNum1 = 0;
+        self.stringInputed = nil;
     }
-    self.hasCalculationFinished = YES;
-    i=i+1;
-    NSLog(@"%i,%@,%i",self.num,self.operator,self.addingNum2);
-    return;
     
-//    UIButton *btn = (UIButton *)sender;
-//    self.currentOperator = btn.titleLabel.text;
+    self.timesOperatorPressed = self.timesOperatorPressed + 1;
+    //NSLog(@"%i,%@,%i",self.num,self.operator,self.addingNum2);
+    //??return;
+    
+    //    UIButton *btn = (UIButton *)sender;
+    //    self.currentOperator = btn.titleLabel.text;
 }
 
 -(IBAction)resultPress:(id)sender
 {
     if ([self.operator  isEqual: @"+"])
     {
-        self.addingNum1 = [self.stringInputedFirst intValue];
         self.num =  self.num+self.addingNum1;
     }
-    self.model.result = self.num;
-    self.resultLabel.text = [NSString stringWithFormat:@"%1.0f",self.model.result];
+    self.resultLabel.text = [NSString stringWithFormat:@"%1.0i",self.num];
     self.textInputed.text = [NSString stringWithFormat:@"%@=%i",self.textInputed.text,self.num];
+    self.hasCalculationFinished = YES;
 }
 
 -(IBAction)cleanPress:(id)sender
 {
     self.resultLabel.text = @"0.0";
-    self.model.result = 0.0;
-    self.currentOperator = nil;
+}
+
+-(void)cleanToBeReadyForNextCalculation
+{
+    self.resultLabel.text = @"";
+    self.textInputed.text = @"";
+    self.timesOperatorPressed = 1;
+    self.singleTempNum = 0;
+    self.stringInputed = nil;
+    self.addingNum1 = 0;
+    self.addingNum2 = 0;
+    self.operator = 0;
+    self.num = 0;
+    
+    self.hasCalculationFinished = NO;
+
 }
 
 
-
 @end
+
+//    针对OutletCollection快速枚举事例
+//    for (UIButton *digitalButton in self.digitalNum) {
+//        <#statements#>
+//    }
+
+
+
+//    UIButton *btn = (UIButton *)sender;
+//    self.num = [btn.titleLabel.text doubleValue] ;
+//    if (self.currentOperator == nil)//是第一个数字的话
+//    {
+//        self.model.result = self.num;
+//        self.stringInputed = (NSMutableString *)[NSString stringWithFormat:@"%1.0f",self.num];
+//        self.textInputed.text = self.stringInputed;
+//    }
+//    else
+//    {
+//        self.stringInputed = (NSMutableString *)[NSString stringWithFormat:@"%@,%1.0f",self.stringInputed,self.num];
+//        self.textInputed.text = self.stringInputed;
+//    }
